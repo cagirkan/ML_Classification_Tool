@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,7 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
+            richTextBox1.Enabled = false;
         }
 
         private void buttonBrowse_Click(object sender, EventArgs e)
@@ -64,7 +66,113 @@ namespace WindowsFormsApp1
             double maxVal = findBestAlgorithm(insts);
             string maxValue = String.Format("{0:0.00}", maxVal);
             labelBestSolution.Text = bestAlgorithm + " is the most succesful algorithm for this data set(%" + maxValue + ")";
+            createInputsFornewValues(insts);
             
+        }
+
+        private void createInputsFornewValues(Instances insts)
+        {
+            for (int i = 0; i < insts.numAttributes() - 1; i++)
+            {
+                if (insts.attribute(i).numValues() == 0)
+                {
+                    x = 0;
+                    string attName = insts.attribute(i).name();
+                    Label attributeName = new Label();
+                    attributeName.Size = new Size(70, 20);
+                    attributeName.Text = attName + ":";
+                    attributeName.Location = new Point(x, y);
+                    panel1.Controls.Add(attributeName);
+                    x += 70;
+
+                    TextBox numericValues = new TextBox();
+                    numericValues.Location = new Point(x, y);
+                    panel1.Controls.Add(numericValues);
+                    panel1.Show();
+                    y += 30;
+                    newValues.Add(numericValues);
+                }
+                else
+                {
+                    x = 0;
+                    string attName = insts.attribute(i).name();
+                    Label attributeName = new Label();
+                    attributeName.Size = new Size(70, 20);
+                    attributeName.Text = attName + ":";
+                    attributeName.Location = new Point(x, y);
+                    panel1.Controls.Add(attributeName);
+                    x += 70;
+
+                    ComboBox nominalValues = new ComboBox();
+                    nominalValues.DropDownStyle = ComboBoxStyle.DropDownList;
+                    nominalValues.Location = new Point(x, y);
+                    List<string> items = new List<string>();
+                    for (int j = 0; j < insts.attribute(i).numValues(); j++)
+                    {
+                        items.Add(insts.attribute(i).value(j).ToString()); // Bu gelen valueları dropdowna koy
+                    }
+                    nominalValues.Items.AddRange(items.ToArray());
+                    nominalValues.SelectedIndex = 0;
+                    panel1.Controls.Add(nominalValues);
+                    panel1.Show();
+                    y += 30;
+                    newValues.Add(nominalValues);
+                }
+
+            }
+
+            Button discover_button = new Button();
+            discover_button.Click += Discover_button_Click;
+            discover_button.Location = new Point(x, y);
+            discover_button.Size = new Size(80, 20);
+            discover_button.Text = "Discover";
+            discover_button.BackColor = Color.White;
+            panel1.Controls.Add(discover_button);
+            panel1.Show();
+        }
+
+        private void Discover_button_Click(object sender, EventArgs e)
+        {
+            NumberFormatInfo provider;
+
+            double[] Value = new double[insts.numAttributes()];
+
+            for (int i = 0; i < newValues.Count; i++)
+            {
+                if (newValues[i].GetType() == typeof(TextBox))
+                {
+                    TextBox txt = (TextBox)newValues[i];
+
+                    provider = new NumberFormatInfo();
+                    provider.NumberDecimalSeparator = ".";
+                    string value = txt.Text;
+                    Double value_double = Convert.ToDouble(value, provider);
+                    Value[i] = value_double;
+                }
+                else
+                {
+                    ComboBox cmb = (ComboBox)newValues[i];
+                    Value[i] = Convert.ToDouble(cmb.SelectedIndex);
+                }
+            }
+
+            Value[insts.numAttributes() - 1] = 0;
+            Instance b = new DenseInstance(1.0, Value);
+            insts.add(b);
+
+
+            weka.filters.Filter normalized = new weka.filters.unsupervised.attribute.Normalize();
+            normalized.setInputFormat(insts);
+            insts = weka.filters.Filter.useFilter(insts, normalized);
+
+            double index = Bestmodel.classifyInstance(insts.lastInstance());
+
+            string classname = insts.attribute(insts.numAttributes() - 1).value((int)index).ToString();
+
+
+
+            MessageBox.Show("Class of this instance: " + classname);
+
         }
 
         private double findBestAlgorithm(Instances insts)
@@ -176,6 +284,7 @@ namespace WindowsFormsApp1
             Cursor.Current = Cursors.Default;
             return maxValue;
         }
+       
         private void richTextBox_TextChanged(object sender, EventArgs e)
         {
             richTextBox1.SelectionStart = richTextBox1.Text.Length;

@@ -35,12 +35,13 @@ namespace WindowsFormsApp1
             this.labelBestSolution = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // labelFileName
             // 
             this.labelFileName.AutoSize = true;
-            this.labelFileName.Location = new System.Drawing.Point(44, 53);
+            this.labelFileName.Location = new System.Drawing.Point(12, 24);
             this.labelFileName.Name = "labelFileName";
             this.labelFileName.Size = new System.Drawing.Size(26, 13);
             this.labelFileName.TabIndex = 0;
@@ -48,14 +49,15 @@ namespace WindowsFormsApp1
             // 
             // textBoxFileName
             // 
-            this.textBoxFileName.Location = new System.Drawing.Point(76, 50);
+            this.textBoxFileName.BackColor = System.Drawing.SystemColors.Window;
+            this.textBoxFileName.Location = new System.Drawing.Point(44, 21);
             this.textBoxFileName.Name = "textBoxFileName";
             this.textBoxFileName.Size = new System.Drawing.Size(268, 20);
             this.textBoxFileName.TabIndex = 1;
             // 
             // buttonBrowse
             // 
-            this.buttonBrowse.Location = new System.Drawing.Point(350, 48);
+            this.buttonBrowse.Location = new System.Drawing.Point(318, 19);
             this.buttonBrowse.Name = "buttonBrowse";
             this.buttonBrowse.Size = new System.Drawing.Size(75, 23);
             this.buttonBrowse.TabIndex = 2;
@@ -66,7 +68,7 @@ namespace WindowsFormsApp1
             // labelBestSolution
             // 
             this.labelBestSolution.AutoSize = true;
-            this.labelBestSolution.Location = new System.Drawing.Point(73, 186);
+            this.labelBestSolution.Location = new System.Drawing.Point(41, 157);
             this.labelBestSolution.Name = "labelBestSolution";
             this.labelBestSolution.Size = new System.Drawing.Size(0, 13);
             this.labelBestSolution.TabIndex = 3;
@@ -77,18 +79,28 @@ namespace WindowsFormsApp1
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(76, 77);
+            this.richTextBox1.BackColor = System.Drawing.SystemColors.Window;
+            this.richTextBox1.Location = new System.Drawing.Point(44, 48);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(349, 96);
             this.richTextBox1.TabIndex = 4;
             this.richTextBox1.Text = "";
             this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox_TextChanged);
             // 
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(44, 175);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(349, 398);
+            this.panel1.TabIndex = 5;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(499, 451);
+            this.BackColor = System.Drawing.SystemColors.Info;
+            this.ClientSize = new System.Drawing.Size(420, 624);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.labelBestSolution);
             this.Controls.Add(this.buttonBrowse);
@@ -109,6 +121,7 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.Label labelBestSolution;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 
